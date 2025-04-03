@@ -17,7 +17,7 @@
                     <!DOCTYPE html>
                     <html>
                     <head>
-                        <title>浏览器不兼容</title>
+                        <title>SeewoUnlock</title>
                         <style>
                             body {
                                 display: flex!important;
@@ -58,14 +58,14 @@
     <main class="main">
         <aside class="reader">
             <br>
-            <button class="sweep" onclick="sweep()">扫码</button>
+            <button class="sweep" onclick="sweep()">扫描二维码</button>
             <button class="sweep">
                 <input type="file" id="file" onchange="upload()" />选择图片
             </button>
-            <button class="sweep" onclick="decryptActivationCode()">解密！</button><br>
+            <button class="sweep" onclick="decryptActivationCode()">获取密码</button><br>
             <h1 id="Activator"></h1>
             <br>
-            <textarea class="result" id="result" cols="34" rows="6" placeholder="二维码识别结果！"></textarea>
+            <textarea class="result" id="result" cols="34" rows="6" placeholder="二维码识别结果！" readonly></textarea>
             <br>
             <label for="deviceIdInput">设备标识码</label>
             <input type="text" id="deviceIdInput">
@@ -77,31 +77,6 @@
         </aside>
     </main>
 
-    <!-- 二维码生成 -->
-    <script src="./js/qrcode.js"></script>
-    <script src="./js/encryption.js"></script>
-    <script>
-        const text = document.querySelector('#code');
-        const qrcode = new QRCode(document.querySelector('#qrcode'), {
-            text: "请先输入内容！",
-            width: 300,
-            height: 300,
-            colorDark: "black",
-            colorLight: "white",
-            correctLevel: QRCode.CorrectLevel.H
-        });
-
-        // 生成
-        function create() {
-            generateQRCode();
-        };
-        function create0() {
-            qrcode.clear();
-            qrcode.makeCode(text.value);
-        }
-    </script>
-
-    <!-- 二维码识别 -->
     <script src="./js/jimp.js"></script>
     <script src="./js/jsqr.min.js"></script>
     <script src="./js/base.js"></script>
@@ -111,30 +86,24 @@
             sweepId: '#canvas',
             uploadId: '#file',
             error: function (err) {
-                // 识别错误反馈
                 result.value = err;
             },
             seuccess: function (res) {
-                // 识别成功反馈
                 result.value = res.data;
                 //autofill()
             }
         });
 
-        // 扫一扫
         function sweep() {
             result.value = '';
             QrCode.sweep();
         };
 
-        // 从相册选择
         function upload() {
             result.value = '';
             QrCode.upload();
         };
     </script>
-
-    <!-- Demo页面交互 -->
     <script>
         const menu = [...document.querySelectorAll('nav')];
         const aside = [...document.querySelectorAll('aside')];
