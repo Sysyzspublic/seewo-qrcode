@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>希沃扫码解锁工具</title>
+    <link rel="stylesheet" href="./css/base.css" />
+    <script src="./js/crypto-js.min.js"></script>
+</head>
+
+<body>
+    <main class="main">
+        <aside class="reader">
+            <br>
+            <button class="sweep" onclick="sweep()">扫描二维码</button>
+            <button class="sweep">
+                <input type="file" id="file" onchange="upload()" />选择图片
+            </button>
+            <button class="sweep" onclick="decryptActivationCode()">获取密码</button><br>
+            <h1 id="Activator"></h1>
+            <br>
+            <textarea class="result" id="result" cols="34" rows="6" placeholder="input" readonly></textarea>
+            <br>
+            <label for="deviceIdInput">设备标识符</label>
+            <input type="text" id="deviceIdInput">
+            <div class="imgurl">
+                <img id="imgurl" src="./seewo.png" alt="seewo_qrcode" />
+            </div>
+        </aside>
+    </main>
+
+    <script src="./js/jimp.js"></script>
+    <script src="./js/jsqr.min.js"></script>
+    <script src="./js/base.js"></script>
+    <script>
+        const result = document.querySelector('#result');
+        const QrCode = new QrCodeRecognition({
+            sweepId: '#canvas',
+            uploadId: '#file',
+            error: function (err) {
+                // 识别错误反馈
+                result.value = err;
+            },
+            seuccess: function (res) {
+                // 识别成功反馈
+                result.value = res.data;
+                //autofill()
+            }
+        });
+
+        // 扫一扫
+        function sweep() {
+            result.value = '';
+            QrCode.sweep();
+        };
+
+        // 从相册选择
+        function upload() {
+            result.value = '';
+            QrCode.upload();
+        };
+    </script>
+
+    <script>
+        const menu = [...document.querySelectorAll('nav')];
+        const aside = [...document.querySelectorAll('aside')];
+        menu.forEach((nav, n) => {
+            nav.onclick = () => {
+                aside.forEach((ele, a) => {
+                    console.log(a);
+                    ele.style.display = 'none';
+                    menu[a].classList.remove('active');
+                });
+                menu[n].classList.add('active');
+                aside[n].style.display = 'block';
+            }
+        });
+
+        // 禁止复制事件监听
+        document.addEventListener('copy', function (e) {
+            e.preventDefault();
+        });
+
+        document.addEventListener('cut', function (e) {
+            e.preventDefault();
+        });
+
+        document.addEventListener('selectstart', function (e) {
+            e.preventDefault();
+        });
+    </script>
+</body>
+
+</html>
