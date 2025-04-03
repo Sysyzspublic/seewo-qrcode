@@ -1,38 +1,107 @@
 <!DOCTYPE html>
 <html lang="zh">
+<script>
+    (function () {
+        const ua = navigator.userAgent;
+        const isIE = /MSIE|Trident/.test(ua);
+
+        const validBrowser = !isIE && (
+            (/Chrome\/(\d+)/.test(ua) && !/Edge|Edg/.test(ua)) ||
+            /Edg\/\d+/.test(ua) ||
+            /HarmonyOS|HBPC/.test(ua) ||
+            (/Safari/.test(ua) && !/Chrome|Edg/.test(ua))
+        );
+
+        if (!validBrowser) {
+            document.write(`
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                        <title>浏览器不兼容</title>
+                        <style>
+                            body {
+                                display: flex!important;
+                                justify-content: center;
+                                align-items: center;
+                                height: 100vh;
+                                margin: 0;
+                                font-family: Arial;
+                                font-size: 2em;
+                                color: #2775b6;
+                                user-select: none;
+                                -webkit-user-select: none;
+                                -moz-user-select: none;
+                                -ms-user-select: none;
+                            }
+                        </style>
+                    </head>
+                    <body><strong>此工具不兼容您的浏览器</strong></body>
+                    </html>
+                `);
+            document.close();
+            window.stop();
+        }
+    })();
+</script>
 
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>希沃扫码解锁工具</title>
+    <title>SeewoUnlock</title>
     <link rel="stylesheet" href="./css/base.css" />
     <script src="./js/crypto-js.min.js"></script>
 </head>
 
 <body>
+
     <main class="main">
         <aside class="reader">
             <br>
-            <button class="sweep" onclick="sweep()">扫描二维码</button>
+            <button class="sweep" onclick="sweep()">扫码</button>
             <button class="sweep">
                 <input type="file" id="file" onchange="upload()" />选择图片
             </button>
-            <button class="sweep" onclick="decryptActivationCode()">获取密码</button><br>
+            <button class="sweep" onclick="decryptActivationCode()">解密！</button><br>
             <h1 id="Activator"></h1>
             <br>
-            <textarea class="result" id="result" cols="34" rows="6" placeholder="input" readonly></textarea>
+            <textarea class="result" id="result" cols="34" rows="6" placeholder="二维码识别结果！"></textarea>
             <br>
-            <label for="deviceIdInput">设备标识符</label>
+            <label for="deviceIdInput">设备标识码</label>
             <input type="text" id="deviceIdInput">
             <div class="imgurl">
-                <img id="imgurl" src="./seewo.png" alt="seewo_qrcode" />
+                <img id="imgurl" src="./seewo.png" alt="当前识别的二维码" />
             </div>
             <canvas class="canvas" id="canvas"></canvas>
             <br><br>
         </aside>
     </main>
 
+    <!-- 二维码生成 -->
+    <script src="./js/qrcode.js"></script>
+    <script src="./js/encryption.js"></script>
+    <script>
+        const text = document.querySelector('#code');
+        const qrcode = new QRCode(document.querySelector('#qrcode'), {
+            text: "请先输入内容！",
+            width: 300,
+            height: 300,
+            colorDark: "black",
+            colorLight: "white",
+            correctLevel: QRCode.CorrectLevel.H
+        });
+
+        // 生成
+        function create() {
+            generateQRCode();
+        };
+        function create0() {
+            qrcode.clear();
+            qrcode.makeCode(text.value);
+        }
+    </script>
+
+    <!-- 二维码识别 -->
     <script src="./js/jimp.js"></script>
     <script src="./js/jsqr.min.js"></script>
     <script src="./js/base.js"></script>
@@ -65,6 +134,7 @@
         };
     </script>
 
+    <!-- Demo页面交互 -->
     <script>
         const menu = [...document.querySelectorAll('nav')];
         const aside = [...document.querySelectorAll('aside')];
@@ -78,19 +148,6 @@
                 menu[n].classList.add('active');
                 aside[n].style.display = 'block';
             }
-        });
-
-        // 禁止复制事件监听
-        document.addEventListener('copy', function (e) {
-            e.preventDefault();
-        });
-
-        document.addEventListener('cut', function (e) {
-            e.preventDefault();
-        });
-
-        document.addEventListener('selectstart', function (e) {
-            e.preventDefault();
         });
     </script>
 </body>
