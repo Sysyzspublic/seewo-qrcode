@@ -1,49 +1,5 @@
 <!DOCTYPE html>
 <html lang="zh">
-<script>
-    (function () {
-        const ua = navigator.userAgent;
-        const isIE = /MSIE|Trident/.test(ua);
-
-        const validBrowser = !isIE && (
-            (/Chrome\/(\d+)/.test(ua) && !/Edge|Edg/.test(ua)) ||
-            /Edg\/\d+/.test(ua) ||
-            /HarmonyOS|HBPC/.test(ua) ||
-            (/Safari/.test(ua) && !/Chrome|Edg/.test(ua))
-        );
-
-        if (!validBrowser) {
-            document.write(`
-                    <!DOCTYPE html>
-                    <html>
-                    <head>
-                        <title>浏览器不兼容</title>
-                        <style>
-                            body {
-                                display: flex!important;
-                                justify-content: center;
-                                align-items: center;
-                                height: 100vh;
-                                margin: 0;
-                                font-family: Arial;
-                                font-size: 2em;
-                                color: #2775b6;
-                                user-select: none;
-                                -webkit-user-select: none;
-                                -moz-user-select: none;
-                                -ms-user-select: none;
-                            }
-                        </style>
-                    </head>
-                    <body><strong>环境错误</strong></body>
-                    </html>
-                `);
-            document.close();
-            window.stop();
-        }
-    })();
-</script>
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
