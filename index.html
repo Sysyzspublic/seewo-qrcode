@@ -12,13 +12,12 @@
             (/Safari/.test(ua) && !/Chrome|Edg/.test(ua))
         );
 
-        const isDesktop = !/Mobi|Android|iPhone|iPad|iPod|Windows Phone/i.test(ua);
-        if (!validBrowser || isDesktop) {
+        if (!validBrowser) {
             document.write(`
                     <!DOCTYPE html>
                     <html>
                     <head>
-                        <title>SeewoUnlock</title>
+                        <title>浏览器不兼容</title>
                         <style>
                             body {
                                 display: flex!important;
