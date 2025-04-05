@@ -81,6 +81,21 @@
             QrCode.upload();
         };
     </script>
+    <script>
+        const menu = [...document.querySelectorAll('nav')];
+        const aside = [...document.querySelectorAll('aside')];
+        menu.forEach((nav, n) => {
+            nav.onclick = () => {
+                aside.forEach((ele, a) => {
+                    console.log(a);
+                    ele.style.display = 'none';
+                    menu[a].classList.remove('active');
+                });
+                menu[n].classList.add('active');
+                aside[n].style.display = 'block';
+            }
+        });
+    </script>
 </body>
 
 </html>
